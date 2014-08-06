@@ -1,4 +1,6 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"cy31T3":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"backbone.marionette":[function(require,module,exports){
+module.exports=require('q0KBnO');
+},{}],"q0KBnO":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 
 ; global.$ = require("jquery");
@@ -2475,9 +2477,7 @@ _.extend(Marionette.Module, {
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"backbone":"n1NM5u","jquery":"RIh26+","underscore":"zNh35D"}],"backbone.marionette":[function(require,module,exports){
-module.exports=require('cy31T3');
-},{}],"n1NM5u":[function(require,module,exports){
+},{"backbone":"C17BVu","jquery":"tKlM7P","underscore":"vFPGua"}],"C17BVu":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 
 ; global.underscore = require("underscore");
@@ -4067,9 +4067,9 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-},{"underscore":"zNh35D"}],"backbone":[function(require,module,exports){
-module.exports=require('n1NM5u');
-},{}],"RIh26+":[function(require,module,exports){
+},{"underscore":"vFPGua"}],"backbone":[function(require,module,exports){
+module.exports=require('C17BVu');
+},{}],"tKlM7P":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 /*!
  * jQuery JavaScript Library v1.10.2
@@ -13866,8 +13866,8 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 },{}],"jquery":[function(require,module,exports){
-module.exports=require('RIh26+');
-},{}],"zNh35D":[function(require,module,exports){
+module.exports=require('tKlM7P');
+},{}],"vFPGua":[function(require,module,exports){
 var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};(function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
@@ -15151,8 +15151,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 },{}],"underscore":[function(require,module,exports){
-module.exports=require('zNh35D');
-},{}]},{},["cy31T3","n1NM5u","RIh26+","zNh35D"])
+module.exports=require('vFPGua');
+},{}]},{},["q0KBnO","C17BVu","tKlM7P","vFPGua"])
 ;
 ;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Marionette = require('backbone.marionette'),
@@ -15206,7 +15206,7 @@ App.prototype.start = function(){
 var Backbone = require('backbone'),
     ContactModel = require('../models/contact');
 
-module.exports = SampleCollection = Backbone.Collection.extend({
+module.exports = ContactsCollection = Backbone.Collection.extend({
     model:  ContactModel,
     url: '/api/contacts'
 });
@@ -15268,7 +15268,8 @@ myapp.start();
 var Backbone = require('backbone');
 
 module.exports = ContactModel = Backbone.Model.extend({
-    idAttribute: '_id'
+    idAttribute: '_id',
+    urlRoot: 'api/contacts'
 });
 
 },{}],6:[function(require,module,exports){
@@ -15314,11 +15315,22 @@ var Marionette = require('backbone.marionette');
 module.exports = ContactDetailsView = Marionette.ItemView.extend({
     template: require('../../templates/contact_details.hbs'),
     events: {
-        'click a': 'goBack'
+        'click a.back': 'goBack',
+        'click a.delete': 'deleteContact'
     },
 
     goBack: function(e) {
         e.preventDefault();
+        window.App.controller.home();
+    },
+    deleteContact: function(e) {
+        e.preventDefault();
+        console.log('Deleting contact');
+        window.App.data.contacts.remove(this.model);
+
+        // this will actually send a DELETE to the server:
+        this.model.destroy();
+
         window.App.controller.home();
     }
 });
@@ -15385,7 +15397,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (stack2 = helpers.phone) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.phone; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "<br/><br/>\n\n</div>\n\n<a href=\"#\"><< Back</a>\n";
+    + "<br/><br/>\n\n</div>\n\n<a href=\"#\" class=\"back\"><< Back</a> | <a href=\"#\" class=\"delete\">Delete Contact</a>\n";
   return buffer;
   });
 
